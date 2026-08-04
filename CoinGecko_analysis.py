@@ -24,11 +24,11 @@ def parsing_data(data):
         # if coin['symbol'] == 'xrp':
         name = (f"{coin['name'].strip()} ({coin['id'].strip().title()})"
                 if (coin['id'].strip() not in coin['name'].strip().lower().replace(" ","-")
-                    and len(coin['id'].strip()) < 26)
+                    and len(coin['id'].strip()) < 26 and coin['id'] != coin['symbol'])
                 else coin['name'].strip()
                 )
         print(f"{coin['market_cap_rank'] if coin['market_cap_rank'] else '':<16}"
-              f" : {coin['id'][:30].strip():<30} : {name[:62].strip():<52} : {coin['symbol']:<13}"
+              f" : {coin['id'][:30].strip():<30} : {name[:62].strip():<52} : {coin['symbol'].upper():<13}"
               f" : {coin['current_price']:10,.2f}")
     # pprint(data, indent=4, width=30)
     # for coin_id, display_name in CRYPTO_MAP.items():
@@ -60,7 +60,7 @@ try:
         data = response.json()
         # data1 = data.copy()
         # data = {d['id']: d for d in data}
-        print(data)
+        # print(data)
         # pprint.pprint(data, indent=4)
         print(len(data))
         parsing_data(data)
