@@ -1,3 +1,5 @@
+from idlelib.replace import replace
+
 import requests
 # from coingecko_sdk import Coingecko
 import pprint
@@ -16,13 +18,18 @@ url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=mar
 # url = "https://api.coingecko.com/api/v3/coins/list"
 
 def parsing_data(data):
-    print(f"{'Место в рейтинге':<16} : {'Наименование':<52} : "
+    print(f"{'Место в рейтинге':<16} : {'id':<30}  : {'Наименование':<62} : "
           f"{'Буквенный код':<13} : {'Цена $'}")
     for coin in data:
         # if coin['symbol'] == 'xrp':
+        name = (f"{coin['name'].strip()} ({coin['id'].strip().title()})"
+                if (coin['id'].strip() not in coin['name'].strip().lower().replace(" ","-")
+                    and len(coin['id'].strip()) < 26)
+                else coin['name'].strip()
+                )
         print(f"{coin['market_cap_rank'] if coin['market_cap_rank'] else '':<16}"
-              f" : {coin['name'][:52].strip():<52} : {coin['symbol']:<13}"
-              f" : {('$ '+coin['current_price']):10,.2f}")
+              f" : {coin['id'][:30].strip():<30} : {name[:62].strip():<52} : {coin['symbol']:<13}"
+              f" : {coin['current_price']:10,.2f}")
     # pprint(data, indent=4, width=30)
     # for coin_id, display_name in CRYPTO_MAP.items():
     #     if coin_id in data:
