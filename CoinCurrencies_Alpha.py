@@ -55,7 +55,7 @@ def show_coin_info(event):
         label = ttk.Label(frm_info, text='Рейтинг капитализации:', anchor='w',
                           justify=LEFT, width=22)
         label.grid(row=0, column=0, pady=2)
-        entry_n = ttk.Entry(frm_info, width=35)
+        entry_n = ttk.Entry(frm_info, width=35, font="Arial 10 bold")
         entry_n.grid(row=0, column=1)
         entry_n.insert(0, item_values[0].strip())
         entry_n.config(state='readonly')
@@ -63,7 +63,7 @@ def show_coin_info(event):
         label = ttk.Label(frm_info, text='Наименование:', anchor='w',
                           justify=LEFT, width=22)
         label.grid(row=1, column=0, pady=2)
-        entry_n = ttk.Entry(frm_info, width=35)
+        entry_n = ttk.Entry(frm_info, width=35, font="Arial 10 bold")
         entry_n.grid(row=1, column=1)
         entry_n.insert(0, item_values[1].strip())
         entry_n.config(state='readonly')
@@ -71,15 +71,15 @@ def show_coin_info(event):
         label = ttk.Label(frm_info, text='Символьный код:', anchor='w',
                           justify=LEFT, width=22)
         label.grid(row=2, column=0, pady=2)
-        entry_n = ttk.Entry(frm_info, width=35)
+        entry_n = ttk.Entry(frm_info, width=35, font="Arial 10 bold")
         entry_n.grid(row=2, column=1)
         entry_n.insert(0, item_values[2].strip())
         entry_n.config(state='readonly')
 
-        label = ttk.Label(frm_info, text='Цена:', anchor='w',
+        label = ttk.Label(frm_info, text='Текущая цена:', anchor='w',
                           justify=LEFT, width=22)
         label.grid(row=3, column=0, pady=2)
-        entry_n = ttk.Entry(frm_info, width=35)
+        entry_n = ttk.Entry(frm_info, width=35, font="Arial 10 bold")
         entry_n.grid(row=3, column=1)
         entry_n.insert(0, f'$ {item_values[3].strip()}')
         entry_n.config(state='readonly')
@@ -117,7 +117,7 @@ def show_coin_info(event):
         entry_n.insert(0, f'$ {item_values[7].strip()}')
         entry_n.config(state='readonly')
 
-        label = ttk.Label(frm_info, text='Общее кол-во монет в обороте:', anchor=W,
+        label = ttk.Label(frm_info, text='Общее кол. монет в обороте:', anchor=W,
                           justify=LEFT, width=22)
         label.grid(row=8, column=0, pady=2)
         entry_n = ttk.Entry(frm_info, width=35)
