@@ -1,5 +1,3 @@
-from idlelib.replace import replace
-
 import requests
 # from coingecko_sdk import Coingecko
 import pprint
@@ -18,7 +16,7 @@ url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=mar
 # url = "https://api.coingecko.com/api/v3/coins/list"
 
 def parsing_data(data):
-    print(f"{'Место в рейтинге':<16} : {'id':<30}  : {'Наименование':<62} : "
+    print(f"{'Место в рейтинге':<16} : {'id':<30} : {'Наименование':<62} : "
           f"{'Буквенный код':<13} : {'Цена $'}")
     for coin in data:
         # if coin['symbol'] == 'xrp':
@@ -28,7 +26,7 @@ def parsing_data(data):
                 else coin['name'].strip()
                 )
         print(f"{coin['market_cap_rank'] if coin['market_cap_rank'] else '':<16}"
-              f" : {coin['id'][:30].strip():<30} : {name[:62].strip():<52} : {coin['symbol'].upper():<13}"
+              f" : {coin['id'][:30].strip():<30} : {name[:62].strip():<62} : {coin['symbol'].upper():<13}"
               f" : {coin['current_price']:10,.2f}")
     # pprint(data, indent=4, width=30)
     # for coin_id, display_name in CRYPTO_MAP.items():
@@ -60,7 +58,7 @@ try:
         data = response.json()
         # data1 = data.copy()
         # data = {d['id']: d for d in data}
-        # print(data)
+        print(data)
         # pprint.pprint(data, indent=4)
         print(len(data))
         parsing_data(data)
