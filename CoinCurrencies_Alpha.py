@@ -1,9 +1,14 @@
+"""Программа 'Крипта курс' получает текущие курсы популярных криптовалют
+ к доллару США из открытого API агрегатора данных о криптовалютах CoinGecko
+ и выводит их в удобную таблицу c возможностью посмотреть расширенную
+ информацию о текущих показателях интересующей криптовалюты"""
 import requests
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox as mb
 from PIL import Image, ImageTk
 from io import BytesIO
+from time import strftime, localtime
 
 
 class MyToplevel(Toplevel):
@@ -12,12 +17,14 @@ class MyToplevel(Toplevel):
         # код настройки окна
 
 def clear_tree():
+    """Процедура очистки таблицы курсов"""
     # Получаем все ID элементов и удаляем их
     items = rate_view.get_children()
     if items:  # Проверяем, есть ли элементы, чтобы не идти по пустому списку
-        tree.delete(*items)
+        rate_view.delete(*items)
 
 def show_coin_info(event):
+    """Процедура вывода дополнительной информации по криптовалюте"""
     item_id = event.widget.focus()  # Или tree.selection()
     # Получаем идентификатор элемента, на который кликнули
     item_values = event.widget.item(item_id, 'values')
@@ -120,6 +127,7 @@ def show_coin_info(event):
 
 
 def fill_treeview(data):
+    """Процедура заполнения таблицы курсов данными из json"""
     if not data:
         return
     # Очищаем таблицу для нового заполнения
@@ -151,6 +159,8 @@ def fill_treeview(data):
 
 
 def get_coin_rate():
+    """Процедура подключения к агрегатору CoinGecko и получения данных топ-100
+     по криптовалюте"""
     # url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&&per_page=250&page=1"
     url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc"
     try:
@@ -158,6 +168,8 @@ def get_coin_rate():
         response.raise_for_status()
         if response.status_code == 200:
             data = response.json()
+            title_frame['text'] = (f'Курсы популярных криптовалют к $ доллару '
+                               f'США на {strftime("%d.%m.%Y %H:%M", localtime())}')
             fill_treeview(data)
         else:
             mb.showwarning("Внимание",f"Ошибка API: код {response.status_code}")
@@ -169,7 +181,9 @@ win = Tk()
 win.title('Крипта курс')
 win.geometry('1024x750+10-50')
 
-titleв_frame = LabelFrame(text='Курсы популярных криптовалют к $ доллару США')
+title_frame = LabelFrame(text=f'Курсы популярных криптовалют к $ доллару США ',
+                         font="bold", fg='DarkRed')
+title_frame.pack(padx=5, pady=5, fill=BOTH, expand=True)
 
 style = ttk.Style()
 # Cтиль для заголовков
@@ -179,7 +193,7 @@ style.configure("Treeview.Heading", font=('Calibri', 18, 'bold'),
 style.configure("Treeview", font=('Courier new', 14, 'bold'), foreground="navy",
                 rowheight=30)
 
-rate_view = ttk.Treeview(win, columns=('rank', 'name', 'symbol', 'price',
+rate_view = ttk.Treeview(title_frame, columns=('rank', 'name', 'symbol', 'price',
                             'ath', 'atl', 'high_24h', 'low_24h',
                             'circulating_supply', 'image'), show='headings',
                              style="mystyle.Treeview")
@@ -210,11 +224,11 @@ rate_view.heading(column='price', text='Цена')
 
 
 
-scrollbar = ttk.Scrollbar(win, orient="vertical",
+scrollbar = ttk.Scrollbar(title_frame, orient="vertical",
                           command=rate_view.yview)
 rate_view.configure(yscrollcommand=scrollbar.set)
 
-rate_view.pack(side="left", expand=True, fill="both")
+rate_view.pack(side="left", expand=True, fill="both", padx=(10,0), pady=8)
 scrollbar.pack(side="right", fill="y")
 
 menu_bar = Menu(win)
@@ -224,14 +238,14 @@ file_menu = Menu(menu_bar, tearoff=0, font='Verdana 10')
 menu_bar.add_cascade(label="Файл", menu=file_menu)
 # file_menu.add_separator()
 file_menu.add_command(label="Выход", command=quit)
-menu_bar.add_command(label="Обновить", command=get_coin_rate)
+menu_bar.add_command(label="Актуализировать", command=get_coin_rate)
 menu_bar.add_command(label="Справка", command=lambda :
                      mb.showinfo('Справка',
                                  'Программа "Крипта курс" показывает курсы по\n'
                                  'топ-100 рейтинга рыночной капитализации криптовалют.\n'
                                  'Программа не обновляет курсы автоматически.\n'
                                  'Чтобы получить курсы на текущий момент нажмите\n'
-                                 'кнопку меню "Обновить".'
+                                 'кнопку меню "Актуализировать".'
                                  'Для просмотра расширенной информации кликните \n'
                                  'мышкой по интересующей вас криптовалюте.'))
 
