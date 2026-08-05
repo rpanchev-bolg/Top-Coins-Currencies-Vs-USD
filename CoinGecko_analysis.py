@@ -12,7 +12,7 @@ CRYPTO_MAP = {
 }
 ids_param = ",".join(CRYPTO_MAP.keys())
 # url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids_param}&vs_currencies=usd&x_cg_demo_api_key=CG-sMmSbNu6gga5rJfeFgFHfCU8"
-url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&&per_page=250&page=1"
+url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc"  #&per_page=250&page=1"
 # url = "https://api.coingecko.com/api/v3/coins/list"
 
 def parsing_data(data):
@@ -58,7 +58,7 @@ try:
         data = response.json()
         # data1 = data.copy()
         # data = {d['id']: d for d in data}
-        print(data)
+        # print(data)
         # pprint.pprint(data, indent=4)
         print(len(data))
         parsing_data(data)
