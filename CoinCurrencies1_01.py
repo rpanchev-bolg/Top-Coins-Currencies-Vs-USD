@@ -11,6 +11,8 @@ from io import BytesIO
 from time import strftime, localtime
 
 
+task_id = None
+
 class MyToplevel(Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
@@ -161,6 +163,7 @@ def fill_treeview(data):
 def get_coin_rate():
     """Процедура подключения к агрегатору CoinGecko и получения данных топ-100
      по криптовалюте"""
+    global task_id
     # url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&&per_page=250&page=1"
     url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc"
     try:
@@ -175,6 +178,13 @@ def get_coin_rate():
             mb.showwarning("Внимание",f"Ошибка API: код {response.status_code}")
     except requests.exceptions.RequestException as e:
         mb.showerror("Ошибка сети", f"Ошибка сети: {str(e)}")
+
+    task_id = win.after(30000, get_coin_rate)
+
+def close_app():
+    if task_id:
+        win.after_cancel(task_id)
+    quit(0)
 
 
 win = Tk()
@@ -213,16 +223,7 @@ rate_view.heading(column='name', text='Наименование')
 rate_view.heading(column='symbol', text='Тикер')
 rate_view.heading(column='price', text='Цена')
 
-
-# # Заполняем Treeview
-# # poke_ref = sorted(poke_names.items())
-# for npp, (title, cat, rat, stock, price, img) in enumerate(prod_list, start=1):
-#     rate_view.insert('', END, values=(f'{npp:>4}.',f'{title}', f'{cat}', f'{rat}',
-#                                      f'{stock}',f'{price:>9}', img))
-#     rate_view.bind('<Double-Button-1>', show_prod_card)
-#     # Кортеж в values обязателен (val,)
-
-
+# Кортеж в values обязателен (val,)
 
 scrollbar = ttk.Scrollbar(title_frame, orient="vertical",
                           command=rate_view.yview)
@@ -237,13 +238,13 @@ win.config(menu=menu_bar)
 file_menu = Menu(menu_bar, tearoff=0, font='Verdana 10')
 menu_bar.add_cascade(label="Файл", menu=file_menu)
 # file_menu.add_separator()
-file_menu.add_command(label="Выход", command=quit)
+file_menu.add_command(label="Выход", command=close_app)
 menu_bar.add_command(label="Актуализировать", command=get_coin_rate)
 menu_bar.add_command(label="Справка", command=lambda :
                      mb.showinfo('Справка',
                                  'Программа "Крипта курс" показывает курсы по\n'
                                  'топ-100 рейтинга рыночной капитализации криптовалют.\n'
-                                 'Программа не обновляет курсы автоматически.\n'
+                                 'Программа обновляет курсы автоматически каждые 30 сек.\n'
                                  'Чтобы получить курсы на текущий момент нажмите\n'
                                  'кнопку меню "Актуализировать".'
                                  'Для просмотра расширенной информации кликните \n'
