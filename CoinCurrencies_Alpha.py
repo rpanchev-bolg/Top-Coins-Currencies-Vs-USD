@@ -81,7 +81,7 @@ def show_coin_info(event):
         label.grid(row=3, column=0, pady=2)
         entry_n = ttk.Entry(frm_info, width=35)
         entry_n.grid(row=3, column=1)
-        entry_n.insert(0, item_values[3].strip())
+        entry_n.insert(0, f'$ {item_values[3].strip()}')
         entry_n.config(state='readonly')
 
         label = ttk.Label(frm_info, text='Исторический максимум:', anchor='w',
@@ -89,7 +89,7 @@ def show_coin_info(event):
         label.grid(row=4, column=0, pady=2)
         entry_n = ttk.Entry(frm_info, width=35)
         entry_n.grid(row=4, column=1)
-        entry_n.insert(0, item_values[4].strip())
+        entry_n.insert(0, f'$ {item_values[4].strip()}')
         entry_n.config(state='readonly')
 
         label = ttk.Label(frm_info, text='Исторический минимум:', anchor='w',
@@ -97,7 +97,7 @@ def show_coin_info(event):
         label.grid(row=5, column=0, pady=2)
         entry_n = ttk.Entry(frm_info, width=35)
         entry_n.grid(row=5, column=1)
-        entry_n.insert(0, item_values[5].strip())
+        entry_n.insert(0, f'$ {item_values[5].strip()}')
         entry_n.config(state='readonly')
 
         label = ttk.Label(frm_info, text='Макс.цена за посл.24ч:', anchor=W,
@@ -105,7 +105,7 @@ def show_coin_info(event):
         label.grid(row=6, column=0, pady=2)
         entry_n = ttk.Entry(frm_info, width=35)
         entry_n.grid(row=6, column=1)
-        entry_n.insert(0, item_values[6].strip())
+        entry_n.insert(0, f'$ {item_values[6].strip()}')
         entry_n.config(state='readonly')
 
 
@@ -114,7 +114,7 @@ def show_coin_info(event):
         label.grid(row=7, column=0, pady=2)
         entry_n = ttk.Entry(frm_info, width=35)
         entry_n.grid(row=7, column=1)
-        entry_n.insert(0, item_values[7].strip())
+        entry_n.insert(0, f'$ {item_values[7].strip()}')
         entry_n.config(state='readonly')
 
         label = ttk.Label(frm_info, text='Общее кол-во монет в обороте:', anchor=W,
